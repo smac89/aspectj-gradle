@@ -3,23 +3,10 @@ version = "1.0-SNAPSHOT"
 
 buildscript {
     repositories {
-        flatDir {
-            dirs "../"
-        }
+        flatDir name: 'libs', dirs: "${rootProject.buildDir}/libs"
     }
-
     dependencies {
-        classpath files("${rootProject.buildDir}/libs")
-    }
-}
-
-
-subprojects {
-    task hello {
-        group = 'example'
-        doLast {
-            println "${it.project.name}: I am an example"
-        }
+        classpath "${rootProject.group}:${rootProject.name}:${rootProject.version.toString()}"
     }
 }
 

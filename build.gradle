@@ -1,13 +1,8 @@
-plugins {
-//    id 'com.gradle.plugin-publish' version '0.9.10'
-    id 'java-gradle-plugin'
-}
-
 apply plugin: 'groovy'
-apply plugin: 'maven-publish'
+apply plugin: 'java-gradle-plugin'
 
-group = 'com.github.smac89.aspectj'
-version = '0.1.0'
+group = "$artifact_group"
+version = "$artifact_version.$build_number"
 
 repositories {
     jcenter()
@@ -21,28 +16,8 @@ dependencies {
 gradlePlugin {
     plugins {
         'aspectj-gradle' {
-            id = 'com.github.smac89.aspectj'
+            id = "$artifact_group"
             implementationClass = 'com.github.smac89.aspectj.AspectJPlugin'
         }
     }
 }
-
-//publishing {
-//    publications {
-//        mavenJava(MavenPublication) {
-//            from components.java
-//        }
-//    }
-//    repositories {
-//        maven {
-//            url "https://maven.eveoh.nl/content/repositories/releases"
-//            if (project.hasProperty('mavenUser')) {
-//                credentials {
-//                    username mavenUser
-//                    password mavenPass
-//                }
-//            }
-//        }
-//    }
-//}
-
