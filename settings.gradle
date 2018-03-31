@@ -1,1 +1,3 @@
-rootProject.name = 'gradle-aspectj'
+rootProject.name = 'aspectj-gradle'
+include 'examples'
+include 'examples:simple-aspect-project'

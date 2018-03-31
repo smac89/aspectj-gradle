@@ -1,0 +1,28 @@
+group = "com.github.smac89.example"
+version = "1.0-SNAPSHOT"
+
+buildscript {
+    repositories {
+        flatDir {
+            dirs "../"
+        }
+    }
+
+    dependencies {
+        classpath files("${rootProject.buildDir}/libs")
+    }
+}
+
+
+subprojects {
+    task hello {
+        group = 'example'
+        doLast {
+            println "${it.project.name}: I am an example"
+        }
+    }
+}
+
+subprojects {
+    apply plugin: 'com.github.smac89.aspectj'
+}

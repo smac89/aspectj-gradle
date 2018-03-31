@@ -1,5 +1,6 @@
 package aspectj
 
+import javafx.beans.property.Property
 import org.gradle.api.DefaultTask
 import org.gradle.api.GradleException
 import org.gradle.api.Plugin
@@ -11,12 +12,11 @@ import org.gradle.api.tasks.SourceSet
 import org.gradle.api.tasks.TaskAction
 
 /**
- *
  * @author Luke Taylor
  * @author Mike Noordermeer
+ * @author smac89
  */
 class AspectJPlugin implements Plugin<Project> {
-
     void apply(Project project) {
         project.plugins.apply(JavaPlugin)
 
@@ -174,8 +174,10 @@ class Ajc extends DefaultTask {
 class AspectJExtension {
 
     String version
+    Property<String> ssdfs;
 
     AspectJExtension(Project project) {
+        project.objects.property(String)
         this.version = project.findProperty('aspectjVersion') ?: '1.8.12'
     }
 }
