@@ -1,15 +1,12 @@
-group = "com.github.smac89.example"
-version = "1.0-SNAPSHOT"
-
-buildscript {
-    repositories {
-        flatDir name: 'libs', dirs: "${rootProject.buildDir}/libs"
-    }
-    dependencies {
-        classpath "${rootProject.group}:${rootProject.name}:${rootProject.version.toString()}"
+subprojects {
+    buildscript {
+        dependencies {
+            classpath "com.github.smac89.aspectj:aspectj-gradle:0.1.0"
+        }
     }
 }
 
-subprojects {
-    apply plugin: 'com.github.smac89.aspectj'
+allprojects {
+    group = "com.github.smac89.example"
+    version = "1.0-SNAPSHOT"
 }

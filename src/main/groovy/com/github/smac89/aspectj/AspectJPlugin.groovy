@@ -20,11 +20,13 @@ class AspectJPlugin implements Plugin<Project> {
     private Configuration ajtools
     private SourceSetContainer sourceSets
     private AspectJPluginExtension aspectj
+    private Project project;
 
     @Override
     void apply(Project project) {
         project.getPluginManager().apply(JavaPlugin)
 
+        this.project = project;
         ajtools = project.configurations.maybeCreate(AJTOOLS)
         aspectj = project.extensions.create(ASPECTJ, AspectJPluginExtension)
         sourceSets = project.properties.get("sourceSets") as SourceSetContainer
@@ -33,41 +35,38 @@ class AspectJPlugin implements Plugin<Project> {
         def aspectjVersion = project.findProperty('aspectjVersion') as String
         if (!aspectjVersion) {
             aspectjVersion = '1.8.13'
-            project.logger.warn "Could not find property for aspectjVersion; Using version $aspectjVersion instead"
         }
 
         ajtools.dependencies.add(project.dependencies.create("org.aspectj:aspectjtools:$aspectjVersion"))
 
-        project.afterEvaluate {
-            def defaultArgs = aspectj.properties.findResults { prop, value ->
-                value == null ?: [prop.toString(), value.toString()]
-            } collectEntries()
+        def defaultArgs = aspectj.properties.findResults { prop, value ->
+            value == null ?: [prop.toString(), value.toString()]
+        } collectEntries()
 
-            def weaveOption = defaultArgs.getProperties().remove("weaveOption") ?: WeaveType.WEAVE_FINAL_JAR.name()
+        def weaveOption = defaultArgs.getProperties().remove("weaveOption") ?: WeaveType.WEAVE_FINAL_JAR.name()
 
-            for (sourceSet in sourceSets) {
-                project.logger.warn("Checking sourceset: ${sourceSet.name}")
-                switch (sourceSet.name) {
-                    case SourceSet.MAIN_SOURCE_SET_NAME:
-                        createTask(project, sourceSet, "compileAspect")
+        for (sourceSet in sourceSets) {
+            switch (sourceSet.name) {
+                case SourceSet.MAIN_SOURCE_SET_NAME:
+                    createTask(sourceSet, "compileAspect")
 //                        it.task("compileAspect", overwrite: true, type: AspectJTask) {
 //                            description = "Compiles AspectJ for ${sourceSet.name} source set"
 //                            group = "ajc"
 //                            defaultAjcArgs = defaultArgs
 //                        }
-                        break
-                    case SourceSet.TEST_SOURCE_SET_NAME:
-                        createTask(project, sourceSet, "compileTestAspect")
-                        break
-                }
+                    break
+                case SourceSet.TEST_SOURCE_SET_NAME:
+                    createTask(sourceSet, "compileTestAspect")
+                    break
             }
         }
     }
 
-    private static Task createTask(Project project, SourceSet sourceSet, String taskName) {
-        return project.task(taskName, overwrite: true, type: AspectJTask) {
+    private Task createTask(SourceSet sourceSet, String taskName) {
+        return project.tasks.create(name: taskName, overwrite: true, type: AspectJTask) {
             description = "Compiles AspectJ for ${sourceSet.name} source set"
-//            group = "ajc"
+            group = "ajc"
+            ajcArgs = ['fork': 'false']
         }
     }
 }

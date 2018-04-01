@@ -10,22 +10,11 @@ import org.gradle.api.tasks.TaskAction
  */
 class AspectJTask extends DefaultTask {
     @Input
-    public Map<String, String> additionalAjcArgs
-
-    @Input
-    Map<String, String> defaultAjcArgs
-
-    AspectJTask() {
-        if (additionalAjcArgs != null) {
-            defaultAjcArgs += additionalAjcArgs
-        }
-    }
+    Map<String, String> ajcArgs = [:]
 
     @TaskAction
     def compile() {
         AntBuilder ant = getAnt()
-        ant.getProperties().forEach { key, value ->
-            System.out.printf("%s -> %s\n", key, value)
-        }
+        println ajcArgs
     }
 }

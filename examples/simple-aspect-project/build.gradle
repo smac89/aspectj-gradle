@@ -1,2 +1,21 @@
-group = "com.github.smac89.example"
-version = "1.0-SNAPSHOT"
+ext {
+    aspectjVersion = '1.8.13'
+}
+
+apply plugin: 'com.github.smac89.aspectj'
+
+task sayHello {
+    doLast {
+        it.project.plugins.each {
+            println it.class.canonicalName
+        }
+    }
+}
+
+aspectj {
+    log = 'mycustom.log'
+}
+
+compileAspect {
+    ajcArgs = [:]
+}
