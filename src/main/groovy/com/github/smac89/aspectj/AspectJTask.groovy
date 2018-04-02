@@ -1,8 +1,6 @@
 package com.github.smac89.aspectj
 
-import org.gradle.api.AntBuilder
 import org.gradle.api.DefaultTask
-import org.gradle.api.provider.Property
 import org.gradle.api.provider.Provider
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.TaskAction
@@ -22,7 +20,6 @@ class AspectJTask extends DefaultTask {
 
     @TaskAction
     def compile() {
-        AntBuilder ant = getAnt()
         println "The additional args are: ${additionalAjcArgs}"
         println "The default args are: ${defaultAjcArgs}"
     }

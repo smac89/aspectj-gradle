@@ -46,7 +46,8 @@ public class AspectJPluginTest {
     public void willCreateTask() {
         BuildResult result = GradleRunner.create()
                                          .withProjectDir(testProjectDir.getRoot())
-                                         .withPluginClasspath().withArguments(taskName)
+                                         .withPluginClasspath()
+                                         .withArguments(taskName)
                                          .build();
 
         assertThat(result.task(":" + taskName).getOutcome(), equalTo(SUCCESS));

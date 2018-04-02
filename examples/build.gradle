@@ -1,12 +1,12 @@
+allprojects {
+    group = "com.github.smac89.example"
+    version = "1.0-SNAPSHOT"
+}
+
 subprojects {
     buildscript {
         dependencies {
             classpath "com.github.smac89.aspectj:aspectj-gradle:0.1.0"
         }
     }
-}
-
-allprojects {
-    group = "com.github.smac89.example"
-    version = "1.0-SNAPSHOT"
 }

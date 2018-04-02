@@ -34,7 +34,7 @@ class AspectJPlugin implements Plugin<Project> {
 
         addAspectJDeps()
 
-        def weaveOption = aspectj.pluginOptions.weaveOption ?: WeaveType.WEAVE_FINAL_JAR
+        def weaveOption = aspectj.pluginOptions.weaveOption ?: WeaveType.COMPILE_TIME
 
         for (sourceSet in sourceSets) {
             switch (sourceSet.name) {
