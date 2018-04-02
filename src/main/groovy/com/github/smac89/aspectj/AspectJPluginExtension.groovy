@@ -1,45 +1,31 @@
 package com.github.smac89.aspectj
 
 import org.gradle.api.JavaVersion
+import org.gradle.api.Project
 
 /**
  * @author Chigozirim Chukwu
  */
 class AspectJPluginExtension {
 
-    // COMPILER
-    Boolean fork
-    Integer maxmem
+    final Expando ajcOptions
 
-    // COMPILER OTHER
-    String xlint
-    Boolean showWeaveInfo
-    Boolean verbose
+    final Expando pluginOptions
 
-    // EXTRAS
-    String log
-    JavaVersion source
-    JavaVersion target
+    AspectJPluginExtension(Project project) {
+        ajcOptions = new Expando(fork: true, maxmem: 1024, Xlint: 'ignore', showWeaveInfo: true,
+                verbose: false,
+                log: 'iajc.log',
+                source: JavaVersion.current(),
+                target: JavaVersion.current(),
+                proc: 'none',
+                aspectPath: project.configurations."${AspectJPlugin.ASPECTS}".asPath)
 
-    String proc
+//        ajcOptions.metaClass {
+//            calll = { Closure configure -> delegate.with(configure) }
+//        }
 
-    WeaveType weaveOption
-
-    AspectJPluginExtension() {
-        fork = true
-        maxmem = 1024
-
-        xlint = "ignore"
-        showWeaveInfo = true
-        verbose = false
-
-        log = "iajc.log"
-        source = JavaVersion.current()
-        target = JavaVersion.current()
-
-        proc = "none"
-
-        weaveOption = WeaveType.WEAVE_FINAL_JAR
+        pluginOptions = new Expando(weaveOption: WeaveType.WEAVE_FINAL_JAR)
     }
 }
 

@@ -12,10 +12,14 @@ task sayHello {
     }
 }
 
-aspectj {
-    log = 'mycustom.log'
+compileAspect {
 }
 
-compileAspect {
-    ajcArgs = [:]
+aspectj {
+    ajcOptions.with {
+    }
+}
+
+model {
+
 }

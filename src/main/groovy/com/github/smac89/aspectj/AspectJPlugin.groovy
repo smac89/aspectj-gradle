@@ -20,17 +20,17 @@ class AspectJPlugin implements Plugin<Project> {
     private Configuration ajtools
     private SourceSetContainer sourceSets
     private AspectJPluginExtension aspectj
-    private Project project;
+    private Project project
 
     @Override
     void apply(Project project) {
         project.getPluginManager().apply(JavaPlugin)
 
-        this.project = project;
+        this.project = project
         ajtools = project.configurations.maybeCreate(AJTOOLS)
-        aspectj = project.extensions.create(ASPECTJ, AspectJPluginExtension)
-        sourceSets = project.properties.get("sourceSets") as SourceSetContainer
         aspects = project.configurations.maybeCreate(ASPECTS)
+        aspectj = project.extensions.create(ASPECTJ, AspectJPluginExtension, project)
+        sourceSets = project.properties.get("sourceSets") as SourceSetContainer
 
         def aspectjVersion = project.findProperty('aspectjVersion') as String
         if (!aspectjVersion) {
@@ -39,21 +39,12 @@ class AspectJPlugin implements Plugin<Project> {
 
         ajtools.dependencies.add(project.dependencies.create("org.aspectj:aspectjtools:$aspectjVersion"))
 
-        def defaultArgs = aspectj.properties.findResults { prop, value ->
-            value == null ?: [prop.toString(), value.toString()]
-        } collectEntries()
-
-        def weaveOption = defaultArgs.getProperties().remove("weaveOption") ?: WeaveType.WEAVE_FINAL_JAR.name()
+        def weaveOption = aspectj.pluginOptions.weaveOption ?: WeaveType.WEAVE_FINAL_JAR
 
         for (sourceSet in sourceSets) {
             switch (sourceSet.name) {
                 case SourceSet.MAIN_SOURCE_SET_NAME:
                     createTask(sourceSet, "compileAspect")
-//                        it.task("compileAspect", overwrite: true, type: AspectJTask) {
-//                            description = "Compiles AspectJ for ${sourceSet.name} source set"
-//                            group = "ajc"
-//                            defaultAjcArgs = defaultArgs
-//                        }
                     break
                 case SourceSet.TEST_SOURCE_SET_NAME:
                     createTask(sourceSet, "compileTestAspect")
@@ -63,10 +54,8 @@ class AspectJPlugin implements Plugin<Project> {
     }
 
     private Task createTask(SourceSet sourceSet, String taskName) {
-        return project.tasks.create(name: taskName, overwrite: true, type: AspectJTask) {
-            description = "Compiles AspectJ for ${sourceSet.name} source set"
-            group = "ajc"
-            ajcArgs = ['fork': 'false']
-        }
+        return project.tasks.create(name: taskName, overwrite: true, type: AspectJTask,
+                description: "Compiles AspectJ for ${sourceSet.name} source set",
+                group: "ajc")
     }
 }
