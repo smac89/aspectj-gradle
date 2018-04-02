@@ -7,7 +7,6 @@ import org.gradle.api.artifacts.Configuration
 import org.gradle.api.plugins.JavaPlugin
 import org.gradle.api.tasks.SourceSet
 import org.gradle.api.tasks.SourceSetContainer
-
 /**
  * @author Chigoizirim Chukwu
  */
@@ -34,15 +33,23 @@ class AspectJPlugin implements Plugin<Project> {
 
         addAspectJDeps()
 
-        def weaveOption = aspectj.pluginOptions.weaveOption ?: WeaveType.COMPILE_TIME
+        def weaveOption = aspectj.pluginOptions.weaveOption ?: WeaveType.POST_COMPILE
 
         for (sourceSet in sourceSets) {
             switch (sourceSet.name) {
                 case SourceSet.MAIN_SOURCE_SET_NAME:
-                    createTask(sourceSet, "compileAspect")
+                    project.configure(createTask(sourceSet, "compileAspect")) {
+                        additionalAjcArgs {
+                            destDir = "${project.buildDir}/aspect/"
+                        }
+                    }
                     break
                 case SourceSet.TEST_SOURCE_SET_NAME:
-                    createTask(sourceSet, "compileTestAspect")
+                    project.configure(createTask(sourceSet, "compileTestAspect")) {
+                        additionalAjcArgs {
+                            destDir = "${project.buildDir}/test-aspect/"
+                        }
+                    }
                     break
             }
         }
@@ -51,7 +58,11 @@ class AspectJPlugin implements Plugin<Project> {
     private Task createTask(SourceSet sourceSet, String taskName) {
         return project.tasks.create(name: taskName, overwrite: true, type: AspectJTask,
                 description: "Compiles AspectJ for ${sourceSet.name} source set",
-                group: "ajc")
+                group: "ajc") {
+            additionalAjcArgs {
+                classpath = (sourceSet.runtimeClasspath + sourceSet.compileClasspath).asPath
+            }
+        }
     }
 
     private void addAspectJDeps() {

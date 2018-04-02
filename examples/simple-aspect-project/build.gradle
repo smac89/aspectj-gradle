@@ -5,9 +5,11 @@ ext {
 apply plugin: 'com.github.smac89.aspectj'
 
 compileAspect {
+    additionalAjcArgs {
+    }
 }
 
 aspectj {
-    ajcOptions.with {
+    ajcOptions {
     }
 }

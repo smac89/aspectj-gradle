@@ -28,4 +28,9 @@ class AspectJTask extends DefaultTask {
     Map<String, String> getDefaultAjcArgs() {
         defaultAjcArgs.get()
     }
+
+    def additionalAjcArgs(Closure configure) {
+        configure.delegate = additionalAjcArgs
+        configure()
+    }
 }

@@ -1,5 +1,8 @@
 package com.github.smac89.aspectj;
 
+/**
+ * @author Chigozirim Chukwu
+ */
 public enum WeaveType {
-    COMPILE_TIME, LOAD_TIME
+    COMPILE, POST_COMPILE, LOAD
 }

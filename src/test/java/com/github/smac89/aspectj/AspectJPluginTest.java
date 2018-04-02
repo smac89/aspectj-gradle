@@ -39,7 +39,7 @@ public class AspectJPluginTest {
     public void setup() throws IOException {
         File buildFile = testProjectDir.newFile("build.gradle");
         writeFile("plugins { id 'com.github.smac89.aspectj' }",
-                  buildFile, StandardCharsets.UTF_8.displayName());
+                  buildFile, StandardCharsets.UTF_8.name());
     }
 
     @Test
