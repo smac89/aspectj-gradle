@@ -1,11 +1,8 @@
-ext {
-    aspectjVersion = '1.8.13'
-}
-
 apply plugin: 'com.github.smac89.aspectj'
 
 compileAspect {
     additionalAjcArgs {
+
     }
 }
 

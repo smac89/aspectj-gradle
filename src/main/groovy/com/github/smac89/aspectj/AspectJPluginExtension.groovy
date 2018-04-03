@@ -22,15 +22,15 @@ class AspectJPluginExtension {
                 aspectPath: project.configurations."${AspectJPlugin.ASPECTS}".asPath,
                 encoding: StandardCharsets.UTF_8.name())
 
-        pluginOptions = new Expando(weaveOption: WeaveType.COMPILE)
+        pluginOptions = new Expando(weaveOption: WeaveType.POST_COMPILE)
     }
 
-    def ajcOptions(Closure configure) {
+    def ajcOptions(Closure<Expando> configure) {
         configure.delegate = ajcOptions
         configure()
     }
 
-    def pluginOptions(Closure configure) {
+    def pluginOptions(Closure<Expando> configure) {
         configure.delegate = pluginOptions
         configure()
     }

@@ -31,9 +31,7 @@ class AspectJPlugin implements Plugin<Project> {
         aspectj = project.extensions.create(ASPECTJ, AspectJPluginExtension, project)
         sourceSets = project.properties.get("sourceSets") as SourceSetContainer
 
-        addAspectJDeps()
-
-        def weaveOption = aspectj.pluginOptions.weaveOption ?: WeaveType.POST_COMPILE
+        def weaveOption = addAspectJDeps()
 
         for (sourceSet in sourceSets) {
             switch (sourceSet.name) {
@@ -65,11 +63,11 @@ class AspectJPlugin implements Plugin<Project> {
         }
     }
 
-    private void addAspectJDeps() {
-        def aspectjVersion = project.findProperty('aspectjVersion') as String
-        if (!aspectjVersion) {
-            aspectjVersion = '1.8.13'
-        }
+    private WeaveType addAspectJDeps() {
+        def aspectjVersion = (project.findProperty('aspectjVersion') as String) ?: '1.8.13'
+        def aspectWeaving = (project.findProperty('aspectWeaving') as String) ?: 'compile'
+
+        def weaveOption = aspectWeaving == 'compile' ? WeaveType.POST_COMPILE : WeaveType.LOAD
 
         ajtools.dependencies.add(project.dependencies.create("org.aspectj:aspectjtools:$aspectjVersion"))
         project.repositories {
@@ -79,5 +77,7 @@ class AspectJPlugin implements Plugin<Project> {
         project.dependencies {
             compile "org.aspectj:aspectjrt:$aspectjVersion"
         }
+
+        weaveOption
     }
 }
