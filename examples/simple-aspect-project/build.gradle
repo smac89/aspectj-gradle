@@ -7,6 +7,5 @@ compileAspect {
 }
 
 aspectj {
-    ajcOptions {
-    }
+    hello = 'world'
 }

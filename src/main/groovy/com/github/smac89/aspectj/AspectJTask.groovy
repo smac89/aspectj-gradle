@@ -10,7 +10,7 @@ import org.gradle.api.tasks.TaskAction
  */
 class AspectJTask extends DefaultTask {
     private final Provider<Map<String, String>> defaultAjcArgs = project.provider {
-        project.aspectj.ajcOptions.properties.findResults { prop, value ->
+        project.aspectj.ajcOptions.findResults { prop, value ->
             value == null ?: [prop.toString(), value.toString()]
         } collectEntries()
     }

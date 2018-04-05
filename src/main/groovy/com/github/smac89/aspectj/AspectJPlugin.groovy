@@ -29,6 +29,7 @@ class AspectJPlugin implements Plugin<Project> {
         ajtools = project.configurations.maybeCreate(AJTOOLS)
         aspects = project.configurations.maybeCreate(ASPECTS)
         aspectj = project.extensions.create(ASPECTJ, AspectJPluginExtension, project)
+
         sourceSets = project.properties.get("sourceSets") as SourceSetContainer
 
         def weaveOption = addAspectJDeps()
