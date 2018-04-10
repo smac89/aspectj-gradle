@@ -12,27 +12,19 @@ class AspectJTask extends DefaultTask implements AspectTaskWithDefaults {
     SourceSet sourceSet
 
     @Input
-    final Map<String, String> additionalAjcArgs = [:]
-
-//    @Input
-//    WeaveOption weaveOption
+    final Map<String, String> additionalAjcArgs
 
     @OutputDirectory
     String destDir
 
     AspectJTask() {
+        additionalAjcArgs = [:]
         ant.taskdef(resource: 'org/aspectj/tools/ant/taskdefs/aspectjTaskdefs.properties',
                 classpath: project.configurations.findByName(AspectJPlugin.AJTOOLS)?.asPath)
     }
 
     @TaskAction
     def compile() {
-//        if (weaveOption == WeaveOption.COMPILE) {
-//            _actionCompile()
-//        }
-    }
-
-    def _actionCompile() {
         ant.iajc(ajcArgs)
     }
 
