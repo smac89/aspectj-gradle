@@ -7,5 +7,4 @@ compileAspect {
 }
 
 aspectj {
-    hello = 'world'
 }

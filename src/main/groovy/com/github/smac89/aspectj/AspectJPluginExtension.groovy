@@ -14,7 +14,7 @@ class AspectJPluginExtension {
 
     AspectJPluginExtension(Project project) {
         ajcOptions = [fork         : true,
-                      maxmem       : 1024,
+                      maxmem       : '1024m',
                       Xlint        : 'ignore',
                       showWeaveInfo: true,
                       verbose      : false,
