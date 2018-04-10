@@ -14,22 +14,22 @@ class AspectJTask extends DefaultTask implements AspectTaskWithDefaults {
     @Input
     final Map<String, String> additionalAjcArgs = [:]
 
-    @Input
-    WeaveOption weaveOption
+//    @Input
+//    WeaveOption weaveOption
 
     @OutputDirectory
     String destDir
 
     AspectJTask() {
         ant.taskdef(resource: 'org/aspectj/tools/ant/taskdefs/aspectjTaskdefs.properties',
-                classpath: project.configurations.ajtools.asPath)
+                classpath: project.configurations.findByName(AspectJPlugin.AJTOOLS)?.asPath)
     }
 
     @TaskAction
     def compile() {
-        if (weaveOption == WeaveOption.COMPILE) {
-            _actionCompile()
-        }
+//        if (weaveOption == WeaveOption.COMPILE) {
+//            _actionCompile()
+//        }
     }
 
     def _actionCompile() {
@@ -51,5 +51,9 @@ class AspectJTask extends DefaultTask implements AspectTaskWithDefaults {
 
     def setDestDir(File value) {
         destDir = value.absolutePath
+    }
+
+    def setDestDir(String value) {
+        destDir = value
     }
 }

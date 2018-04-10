@@ -7,6 +7,7 @@ import org.gradle.api.artifacts.Configuration
 import org.gradle.api.plugins.JavaPlugin
 import org.gradle.api.tasks.SourceSet
 import org.gradle.api.tasks.SourceSetContainer
+import org.gradle.jvm.application.tasks.CreateStartScripts
 
 /**
  * @author Chigoizirim Chukwu
@@ -48,6 +49,10 @@ class AspectJPlugin implements Plugin<Project> {
                     project.configure(createTask(sourceSet, "compileTestAspect")) {
                         destDir = "${project.buildDir}/test-aspect/"
                     }
+
+//                    project.test {
+//                        jvmArgs += "-javaagent:${project.configurations.weave.asPath}"
+//                    }
                     break
             }
         }
@@ -56,15 +61,21 @@ class AspectJPlugin implements Plugin<Project> {
     private Task createTask(SourceSet sourceSet, String taskName) {
         return project.tasks.create(name: taskName, overwrite: true, type: AspectJTask,
                 description: "Compiles AspectJ for ${sourceSet.name} source set",
-                group: "ajc") {
+                group: "ajc", dependsOn: "jar") {
             it.additionalAjcArgs {
                 classpath = (sourceSet.runtimeClasspath + sourceSet.compileClasspath).filter {it.exists()}.asPath
                 sourceRoots = sourceSet.java.sourceDirectories.asPath
             }
 
-            it.weaveOption = WeaveOption.safeName(project.weaveOption as String, WeaveOption.LOAD)
-
             it.sourceSet = sourceSet
+        }
+    }
+
+    private Task createLoadTask(SourceSet sourceSet, String taskName) {
+        return project.tasks.create(name: taskName, overwrite: true, type: CreateStartScripts,
+                description: "Adds load time weaving for  AspectJ for ${sourceSet.name} source set",
+                group: "ajc") {
+            classpath = sourceSet.runtimeClasspath.asPath
         }
     }
 

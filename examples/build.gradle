@@ -4,6 +4,19 @@ allprojects {
 }
 
 subprojects {
+    repositories {
+        flatDir {
+            dirs "${rootProject.projectDir}/libs"
+        }
+    }
+
+    apply plugin: 'java'
+
+    dependencies {
+        testCompile name: 'hamcrest-core-1.3'
+        testCompile name: 'junit-4.12'
+    }
+
     buildscript {
         dependencies {
             classpath "com.github.smac89.aspectj:aspectj-gradle:0.1.0"

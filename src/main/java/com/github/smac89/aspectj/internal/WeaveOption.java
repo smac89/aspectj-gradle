@@ -1,4 +1,4 @@
-package com.github.smac89.aspectj;
+package com.github.smac89.aspectj.internal;
 
 import java.util.Arrays;
 import java.util.Set;
@@ -15,6 +15,6 @@ public enum WeaveOption {
             .collect(Collectors.toSet());
 
     public static WeaveOption safeName(String name, WeaveOption defaultIfNotExist) {
-        return names.contains(name.toUpperCase()) ? WeaveOption.valueOf(name) : defaultIfNotExist;
+        return names.contains(name.toUpperCase()) ? WeaveOption.valueOf(name.toUpperCase()) : defaultIfNotExist;
     }
 }

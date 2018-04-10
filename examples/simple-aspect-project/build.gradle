@@ -7,4 +7,6 @@ compileAspect {
 }
 
 aspectj {
+    appWeave 'compile'
+    testWeave 'load'
 }
