@@ -8,6 +8,7 @@ import org.gradle.api.plugins.JavaPlugin
 import org.gradle.api.tasks.SourceSet
 import org.gradle.api.tasks.SourceSetContainer
 import org.gradle.jvm.application.tasks.CreateStartScripts
+import org.gradle.jvm.tasks.Jar
 
 /**
  * @author Chigoizirim Chukwu
@@ -41,39 +42,41 @@ class AspectJPlugin implements Plugin<Project> {
         for (sourceSet in sourceSets) {
             switch (sourceSet.name) {
                 case SourceSet.MAIN_SOURCE_SET_NAME:
-                    project.configure(createTask(sourceSet, "compileAspect")) {
+                    project.configure(createCompileTask(sourceSet, "compileAspect", "jar")) {
                         destDir = "${project.buildDir}/aspect/"
                     }
                     break
                 case SourceSet.TEST_SOURCE_SET_NAME:
-                    project.configure(createTask(sourceSet, "compileTestAspect")) {
-                        destDir = "${project.buildDir}/test-aspect/"
+                    def jarTaskName = "aspectTestJar"
+                    project.tasks.create(name: jarTaskName, type: Jar, overwrite: true) {
+                        classifier = 'tests'
+                        from sourceSet.output.classesDirs
                     }
 
-//                    project.test {
-//                        jvmArgs += "-javaagent:${project.configurations.weave.asPath}"
-//                    }
+                    project.configure(createCompileTask(sourceSet, "compileTestAspect", jarTaskName)) {
+                        destDir = "${project.buildDir}/test-aspect/"
+                    }
                     break
             }
         }
     }
 
-    private Task createTask(SourceSet sourceSet, String taskName) {
+    private Task createCompileTask(SourceSet sourceSet, String taskName, String jarTaskName) {
         return project.tasks.create(name: taskName, overwrite: true, type: AspectJTask,
-                description: "Compiles AspectJ for ${sourceSet.name} source set",
-                group: "ajc", dependsOn: "jar") {
+                description: "Compiles AspectJ for ${sourceSet.name} jar",
+                group: "ajc", dependsOn: jarTaskName) {
+            it.sourceSet = sourceSet
+
             it.additionalAjcArgs {
                 classpath = (sourceSet.runtimeClasspath + sourceSet.compileClasspath).filter {it.exists()}.asPath
-                sourceRoots = sourceSet.java.sourceDirectories.asPath
+                inpath = this.project."$jarTaskName".archivePath
             }
-
-            it.sourceSet = sourceSet
         }
     }
 
     private Task createLoadTask(SourceSet sourceSet, String taskName) {
         return project.tasks.create(name: taskName, overwrite: true, type: CreateStartScripts,
-                description: "Adds load time weaving for  AspectJ for ${sourceSet.name} source set",
+                description: "Adds AspectJ load time weaving for ${sourceSet.name} source set",
                 group: "ajc") {
             classpath = sourceSet.runtimeClasspath.asPath
         }

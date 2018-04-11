@@ -31,7 +31,8 @@ class AspectJPluginExtension {
                       target       : project.property('targetCompatibility'),
                       proc         : 'none',
                       aspectPath   : project.configurations.findByName("${AspectJPlugin.ASPECTS}")?.asPath,
-                      encoding     : StandardCharsets.UTF_8.name()] as Map<String, Object>
+                      encoding     : StandardCharsets.UTF_8.name(),
+                      outxml       : true] as Map<String, Object>
 
         appWeave = project.objects.property(WeaveOption)
         appWeave.set(WeaveOption.COMPILE)

@@ -6,6 +6,12 @@ compileAspect {
     }
 }
 
+compileTestAspect {
+    additionalAjcArgs {
+        log = 'iajc-test.log'
+    }
+}
+
 aspectj {
     appWeave 'compile'
     testWeave 'load'
