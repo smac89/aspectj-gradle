@@ -1,5 +1,6 @@
-package com.github.smac89.aspectj
+package com.github.smac89.aspectj.tasks
 
+import com.github.smac89.aspectj.AspectJPlugin
 import com.github.smac89.aspectj.internal.AspectTaskWithDefaults
 import org.gradle.api.Action
 import org.gradle.api.DefaultTask
@@ -30,6 +31,7 @@ class AspectJTask extends DefaultTask implements AspectTaskWithDefaults {
 
     def additionalAjcArgs(Action<Map<String, String>> configure) {
         configure.execute(additionalAjcArgs)
+        additionalAjcArgs
     }
 
     def getAjcArgs() {

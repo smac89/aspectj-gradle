@@ -1,18 +1,40 @@
 apply plugin: 'com.github.smac89.aspectj'
 
-compileAspect {
-    additionalAjcArgs {
+//compileAspect {
+//    additionalAjcArgs {
+//
+//    }
+//}
 
+//compileTestAspect {
+//    additionalAjcArgs {
+//        log = 'iajc-test.log'
+//    }
+//}
+
+//aspectj {
+//    appWeave 'compile'
+//    testWeave 'load'
+//}
+
+model {
+    aspectj {
+        xlint 'ignore'
+        appWeave 'compile'
+        testWeave 'load'
+    }
+
+    tasks {
+        create('checkAspect') {
+            doLast {
+                println project.extensions.extraProperties.properties
+            }
+        }
     }
 }
 
-compileTestAspect {
-    additionalAjcArgs {
-        log = 'iajc-test.log'
-    }
-}
-
-aspectj {
-    appWeave 'compile'
-    testWeave 'load'
-}
+//task checkAspect {
+//    doLast {
+//        println project.aspectj.properties
+//    }
+//}

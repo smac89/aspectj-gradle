@@ -5,7 +5,7 @@ import org.gradle.api.tasks.Input
 
 trait AspectTaskWithDefaults {
     private final Provider<Map<String, String>> defaultAjcArgs = project.provider {
-        project.aspectj.ajcOptions.findResults { prop, value ->
+        project.aspectjext.ajcOptions.findResults { prop, value ->
             value == null ?: [prop.toString(), value.toString()]
         }.collectEntries() as Map<String, String>
     }

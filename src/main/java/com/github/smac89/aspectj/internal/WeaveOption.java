@@ -15,6 +15,7 @@ public enum WeaveOption {
             .collect(Collectors.toSet());
 
     public static WeaveOption safeName(String name, WeaveOption defaultIfNotExist) {
-        return names.contains(name.toUpperCase()) ? WeaveOption.valueOf(name.toUpperCase()) : defaultIfNotExist;
+        name = name.toUpperCase();
+        return names.contains(name) ? WeaveOption.valueOf(name) : defaultIfNotExist;
     }
 }
