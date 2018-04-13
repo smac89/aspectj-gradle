@@ -1,7 +1,6 @@
 package com.github.smac89.aspectj.models;
 
 import com.github.smac89.aspectj.internal.WeaveOption;
-import groovy.transform.CompileStatic;
 import org.gradle.api.JavaVersion;
 import org.gradle.api.artifacts.Configuration;
 import org.gradle.model.Managed;
@@ -10,7 +9,6 @@ import org.gradle.model.Unmanaged;
 import java.nio.charset.Charset;
 
 @Managed
-@CompileStatic
 public interface AJRuleExtensionBase {
     void setAppWeave(WeaveOption appWeave);
     WeaveOption getAppWeave();

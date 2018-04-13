@@ -1,27 +1,10 @@
 apply plugin: 'com.github.smac89.aspectj'
 
-//compileAspect {
-//    additionalAjcArgs {
-//
-//    }
-//}
-
-//compileTestAspect {
-//    additionalAjcArgs {
-//        log = 'iajc-test.log'
-//    }
-//}
-
-//aspectj {
-//    appWeave 'compile'
-//    testWeave 'load'
-//}
-
 model {
     aspectj {
         xlint 'ignore'
-        appWeave 'compile'
-        testWeave 'load'
+        appWeave 'load'
+        testWeave 'compile'
     }
 
     tasks {
@@ -29,6 +12,9 @@ model {
             doLast {
                 println project.extensions.extraProperties.properties
             }
+        }
+        runAspectApplication {
+            mainClassName = 'com.github.smac89.simple.Main'
         }
     }
 }

@@ -17,7 +17,7 @@ import org.gradle.api.plugins.JavaPlugin
 class AspectJPlugin implements Plugin<Project> {
     public static final String AJTOOLS = "ajtools"
     public static final String ASPECTS = "aspects"
-    public static final String ASPECTJ = "aspectj"
+    public static final String ASPECTJEXT = "aspectjext"
     public static final String AJWEAVE = "weave"
 
     Configuration ajtools
@@ -29,7 +29,7 @@ class AspectJPlugin implements Plugin<Project> {
         project.getPluginManager().apply(AJPluginRules)
         project.getPluginManager().apply(AjSourceSetsRules)
 
-        project.extensions.create("aspectjext", AspectJExtension, project)
+        project.extensions.create(ASPECTJEXT, AspectJExtension, project)
 
         ajtools = project.configurations.maybeCreate(AJTOOLS)
         weave = project.configurations.maybeCreate(AJWEAVE)

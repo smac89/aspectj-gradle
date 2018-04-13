@@ -4,6 +4,14 @@ apply plugin: 'java-gradle-plugin'
 group = "$artifact_group"
 version = "$artifact_version.$build_number"
 
+sourceCompatibility=JavaVersion.VERSION_1_7
+targetCompatibility=JavaVersion.VERSION_1_7
+
+// https://blogs.oracle.com/darcy/new-javac-warning-for-setting-an-older-source-without-bootclasspath
+tasks.withType(JavaCompile) {
+    options.forkOptions.jvmArgs += "bootclasspath: ${System.properties.'java.home'}/lib/rt.jar"
+}
+
 repositories {
     jcenter()
     mavenCentral()

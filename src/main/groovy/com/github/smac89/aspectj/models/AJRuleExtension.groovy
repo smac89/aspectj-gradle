@@ -8,7 +8,7 @@ abstract class AJRuleExtension implements AJRuleExtensionBase {
         [
                 fork         : fork as String,
                 maxmem       : maxmem,
-                xlint        : xlint,
+                Xlint        : xlint,
                 showWeaveInfo: showWeaveInfo as String,
                 verbose      : verbose as String,
                 log          : log,

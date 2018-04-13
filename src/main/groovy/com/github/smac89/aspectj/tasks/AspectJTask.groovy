@@ -26,6 +26,7 @@ class AspectJTask extends DefaultTask implements AspectTaskWithDefaults {
 
     @TaskAction
     def compile() {
+        println "Executing with the following args:\n$ajcArgs"
         ant.iajc(ajcArgs)
     }
 

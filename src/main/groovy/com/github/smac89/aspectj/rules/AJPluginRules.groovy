@@ -21,7 +21,7 @@ class AJPluginRules extends RuleSource {
 
     @Model
     Project _project(@Path("extensionContainer") final ExtensionContainer extensions) {
-        extensions.getByType(AspectJExtension).project
+        extensions.getByType(AspectJExtension)?.project
     }
 
     @Defaults
@@ -65,9 +65,10 @@ class AJPluginRules extends RuleSource {
                 it.destDir = "${project.buildDir}/aspect/"
             }
         } else {
-            createLoadTask(tasks, "", sourceSet) {
+            createLoadTask(tasks, "runAspectApplication", sourceSet) {
                 it.defaultJvmOpts += "-javaagent:${project.configurations.weave.asPath}"
                 it.applicationName = project.name
+                it.outputDir = "${project.buildDir}/aspect/" as File
             }
         }
     }
@@ -85,7 +86,8 @@ class AJPluginRules extends RuleSource {
             }
 
             tasks.create(jarTaskName, Jar) {
-                it.classifiers = 'tests'
+                it.group = 'build'
+                it.classifier = 'tests'
                 it.from sourceSet.output.classesDirs
             }
         } else {
@@ -130,7 +132,7 @@ class AJPluginRules extends RuleSource {
     private static void createLoadTask(ModelMap<Task> tasks, String taskName, SourceSet sourceSet,
                                        Action<? super CreateStartScripts> configure = {}) {
         tasks.create(taskName, CreateStartScripts) {
-            it.description = "Adds AJExtension load time weaving for ${sourceSet.name} source set"
+            it.description = "Run aspectJ application and weave aspect at load time for ${sourceSet.name}"
             it.group = 'ajc'
 
             it.classpath = sourceSet.runtimeClasspath
