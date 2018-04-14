@@ -23,7 +23,7 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 @RunWith(Parameterized.class)
-public class AspectJPluginTest {
+public class AspectJCompileTasksTest {
     @Rule
     public final TemporaryFolder testProjectDir = new TemporaryFolder();
 
@@ -43,7 +43,7 @@ public class AspectJPluginTest {
     }
 
     @Test
-    public void willCreateTask() {
+    public void willCreateCompileTask() {
         BuildResult result = GradleRunner.create()
                                          .withProjectDir(testProjectDir.getRoot())
                                          .withPluginClasspath()

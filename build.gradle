@@ -4,8 +4,8 @@ apply plugin: 'java-gradle-plugin'
 group = "$artifact_group"
 version = "$artifact_version.$build_number"
 
-sourceCompatibility=JavaVersion.VERSION_1_6
-targetCompatibility=JavaVersion.VERSION_1_6
+sourceCompatibility=JavaVersion.VERSION_1_8
+targetCompatibility=JavaVersion.VERSION_1_8
 
 // https://blogs.oracle.com/darcy/new-javac-warning-for-setting-an-older-source-without-bootclasspath
 tasks.withType(JavaCompile) {
