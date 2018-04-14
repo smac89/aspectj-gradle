@@ -1,5 +1,8 @@
-apply plugin: 'groovy'
-apply plugin: 'java-gradle-plugin'
+plugins {
+    id 'groovy'
+    id 'java-gradle-plugin'
+    id 'com.gradle.plugin-publish' version '0.9.10'
+}
 
 group = "$artifact_group"
 version = "$artifact_version.$build_number"
@@ -29,6 +32,21 @@ gradlePlugin {
         'aspectj-gradle' {
             id = "$artifact_group"
             implementationClass = 'com.github.smac89.aspectj.AspectJPlugin'
+        }
+    }
+}
+
+pluginBundle {
+    website = 'https://github.com/smac89/aspectj-gradle'
+    vcsUrl = 'https://github.com/smac89/aspectj-gradle.git'
+
+    plugins {
+        'aspectj-gradle' {
+            id = "$artifact_group"
+            displayName = 'Gradle AspectJ Plugin'
+            description = "Gradle plugin for creating tasks for compiling aspects with aspectJ"
+            version = project.version
+            tags = ['aop', 'aspectj', 'weaving']
         }
     }
 }
