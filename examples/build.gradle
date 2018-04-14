@@ -19,7 +19,7 @@ subprojects {
 
     buildscript {
         dependencies {
-            classpath "com.github.smac89.aspectj:aspectj-gradle:0.1.0"
+            classpath "com.github.smac89.aspectj:aspectj-gradle:0.1.1"
         }
     }
 }
