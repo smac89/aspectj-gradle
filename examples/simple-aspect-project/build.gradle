@@ -10,17 +10,12 @@ model {
     tasks {
         create('checkAspect') {
             doLast {
-                println project.extensions.extraProperties.properties
+                println "Aspect Options"
+                println project.extensions.aspectjext
             }
         }
         runAspectApplication {
-            mainClassName = 'com.github.smac89.simple.Main'
+            main = 'com.github.smac89.simple.Main'
         }
     }
 }
-
-//task checkAspect {
-//    doLast {
-//        println project.aspectj.properties
-//    }
-//}

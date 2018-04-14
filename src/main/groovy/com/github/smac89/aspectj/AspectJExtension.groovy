@@ -7,13 +7,15 @@ import org.gradle.api.Project
 /**
  * @author Chigozirim Chukwu
  */
-@TupleConstructor
 @CompileStatic
+@TupleConstructor(excludes = ['ajcOptions'])
 class AspectJExtension {
-    @Deprecated
     final Project project
 
+    /**
+     * DO NOT TOUCH THIS EXTENSION PROPERTY
+     */
     @Deprecated
-    @Delegate
-    Map<String, String> ajcOptions = [:]
+    @Delegate(excludes = ['project'])
+    final Map<String, Object> ajcOptions = [:]
 }

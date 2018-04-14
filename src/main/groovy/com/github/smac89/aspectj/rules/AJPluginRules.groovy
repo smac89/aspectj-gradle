@@ -6,8 +6,8 @@ import com.github.smac89.aspectj.models.AJRuleExtension
 import com.github.smac89.aspectj.tasks.AspectJTask
 import org.gradle.api.*
 import org.gradle.api.plugins.ExtensionContainer
+import org.gradle.api.tasks.JavaExec
 import org.gradle.api.tasks.SourceSet
-import org.gradle.api.tasks.application.CreateStartScripts
 import org.gradle.api.tasks.testing.Test
 import org.gradle.jvm.tasks.Jar
 import org.gradle.model.*
@@ -21,7 +21,7 @@ class AJPluginRules extends RuleSource {
 
     @Model
     Project _project(@Path("extensionContainer") final ExtensionContainer extensions) {
-        extensions.getByType(AspectJExtension)?.project
+        extensions.getByType(AspectJExtension).project
     }
 
     @Defaults
@@ -51,7 +51,7 @@ class AJPluginRules extends RuleSource {
     @Finalize
     void createTaskDefaultOptions(AJRuleExtension aspectJ, @Path("_project") Project project) {
         println "Finalizing project options"
-        project.extensions.aspectjext.ajcOptions = aspectJ as Map
+        project.extensions.aspectjext << (aspectJ as Map)
     }
 
     @Mutate
@@ -66,9 +66,7 @@ class AJPluginRules extends RuleSource {
             }
         } else {
             createLoadTask(tasks, "runAspectApplication", sourceSet) {
-                it.defaultJvmOpts += "-javaagent:${project.configurations.weave.asPath}"
-                it.applicationName = project.name
-                it.outputDir = "${project.buildDir}/aspect/" as File
+                it.jvmArgs += "-javaagent:${project.configurations.weave.asPath}"
             }
         }
     }
@@ -130,12 +128,12 @@ class AJPluginRules extends RuleSource {
     }
 
     private static void createLoadTask(ModelMap<Task> tasks, String taskName, SourceSet sourceSet,
-                                       Action<? super CreateStartScripts> configure = {}) {
-        tasks.create(taskName, CreateStartScripts) {
+                                       Action<? super JavaExec> configure = {}) {
+        tasks.create(taskName, JavaExec) {
             it.description = "Run aspectJ application and weave aspect at load time for ${sourceSet.name}"
             it.group = 'ajc'
 
-            it.classpath = sourceSet.runtimeClasspath
+            it.classpath = (sourceSet.runtimeClasspath + sourceSet.compileClasspath).filter { it.exists() }
             configure.execute(it)
         }
     }

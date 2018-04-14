@@ -4,19 +4,19 @@ import org.gradle.model.Managed
 
 @Managed
 abstract class AJRuleExtension implements AJRuleExtensionBase {
-    Map<String, String> asType(Class<Map<String, String>> clazz) {
+    Map<String, ?> asType(Class<Map<String, ?>> clazz) {
         [
-                fork         : fork as String,
+                fork         : fork,
                 maxmem       : maxmem,
                 Xlint        : xlint,
-                showWeaveInfo: showWeaveInfo as String,
-                verbose      : verbose as String,
+                showWeaveInfo: showWeaveInfo,
+                verbose      : verbose,
                 log          : log,
-                source       : source as String,
-                target       : target as String,
+                source       : source,
+                target       : target,
                 aspectpath   : aspectPath.asPath,
                 encoding     : encoding.name(),
-                outxml       : outxml as String,
+                outxml       : outxml,
         ]
     }
 }
