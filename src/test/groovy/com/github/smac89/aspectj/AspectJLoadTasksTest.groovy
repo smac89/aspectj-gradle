@@ -39,7 +39,7 @@ class AspectJLoadTasksTest {
                     appWeave = 'load'
                 }
                 tasks {
-                    runAspectApplication { 
+                    runAspectApplication {
                         main = 'Hello'
                     }
                 }
