@@ -8,14 +8,15 @@ abstract class AJRuleExtension implements AJRuleExtensionBase {
         [
                 fork         : fork,
                 maxmem       : maxmem,
+                proc         : proc,
                 Xlint        : xlint,
                 showWeaveInfo: showWeaveInfo,
                 verbose      : verbose,
                 log          : log,
                 source       : source,
                 target       : target,
-                aspectpath   : aspectPath.asPath,
-                encoding     : encoding.name(),
+                aspectpath   : aspectPath?.asPath,
+                encoding     : encoding.name().toLowerCase(),
                 outxml       : outxml,
         ]
     }

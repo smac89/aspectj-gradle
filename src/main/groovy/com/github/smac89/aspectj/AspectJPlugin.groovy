@@ -16,7 +16,8 @@ import org.gradle.api.plugins.JavaPlugin
 @CompileStatic
 class AspectJPlugin implements Plugin<Project> {
     public static final String AJTOOLS = "ajtools"
-    public static final String ASPECTS = "aspects"
+    public static final String ASPECTS = "aspectpath"
+    public static final String TEST_ASPECTS = "testAspectpath"
     public static final String ASPECTJEXT = "aspectjext"
     public static final String AJWEAVE = "weave"
 
@@ -35,6 +36,7 @@ class AspectJPlugin implements Plugin<Project> {
         weave = project.configurations.maybeCreate(AJWEAVE)
 
         project.configurations.maybeCreate(ASPECTS)
+        project.configurations.maybeCreate(TEST_ASPECTS)
         configureDeps(project)
     }
 

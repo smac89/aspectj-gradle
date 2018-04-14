@@ -3,19 +3,16 @@ apply plugin: 'com.github.smac89.aspectj'
 model {
     aspectj {
         xlint 'ignore'
-        appWeave 'load'
-        testWeave 'compile'
+
+        appWeave 'compile'
+        testWeave 'load'
     }
 
     tasks {
-        create('checkAspect') {
-            doLast {
-                println "Aspect Options"
-                println project.extensions.aspectjext
+        compileAspect {
+            additionalAjcArgs {
+                log = 'iajc-main.log'
             }
-        }
-        runAspectApplication {
-            main = 'com.github.smac89.simple.Main'
         }
     }
 }

@@ -4,46 +4,48 @@ Gradle AspectJ plugin
 Usage
 -----
 
-Either build this project yourself, and include the `.jar` in your buildscript dependencies,
-or use our Maven repo. The plugin is applied using `apply plugin: 'aspectj'`. 
-The version of AspectJ to use can be defined using either `ext.aspectjVersion`, 
-or the `aspectj` extension's `version` attribute. 
-If the AspectJ version is not set, version `1.8.12` is used as the default.
+See https://plugins.gradle.org/plugin/com.github.smac89.aspectj
 
-Something like this:
+_build.gradle_
+
+### New Style
 
 ```groovy
-buildscript {
-    repositories {
-        maven {
-            url "https://maven.eveoh.nl/content/repositories/releases"
-        }
-    }
-
-    dependencies {
-        classpath "nl.eveoh:gradle-aspectj:2.0"
-    }
-}
-
-repositories {
-    mavenCentral()
-}
-
-apply plugin: 'aspectj'
-
-// Optionally
-project.ext {
-    aspectjVersion = '1.8.12'
-}
-// Or
-aspectj {
-    version = '1.8.12'
+plugins {
+  id "com.github.smac89.aspectj" version "0.1.0"
 }
 ```
 
-Note that version 2.0+ is only compatible with Gradle 4+. Use version 1.6 for earlier Gradle versions.
+### Old Style
+```groovy
+buildscript {
+  repositories {
+    maven {
+      url "https://plugins.gradle.org/m2/"
+    }
+  }
+  dependencies {
+    classpath "gradle.plugin.com.github.smac89.aspectj:aspectj-gradle:0.1.0"
+  }
+}
 
-Use the `aspectpath`, `ajInpath`, `testAspectpath` and `testAjInpath` to specify external aspects or external code to weave:
+apply plugin: "com.github.smac89.aspectj"
+```
+
+
+_gradle.properties_
+
+```groovy
+aspectjVersion = '1.8.13'
+```
+
+**NOTE:** This plugin is rule based and as such follows the model-like structure.
+See the example project for an example configuration.
+
+### Requirements
+Compatible with Gradle 4+
+
+Use the `aspectpath` `testAspectpath` configurations to specify external aspects or external code to weave
 
 ```groovy
 dependencies {
@@ -51,42 +53,39 @@ dependencies {
 }
 ```
 
-By default, `xlint: ignore` is used. Specify a different value for the `xlint` variable of the `compileAspect` or
-`compileTestAspect` task to show AspectJ warnings:
+### Options
+By default, the following options are set in the `aspectj` rule:
 
 ```groovy
-compileAspect {
-    xlint = 'warning'
-}
+fork         : true,
+maxmem       : '1024m',
+proc         : 'none',
+Xlint        : 'ignore',
+showWeaveInfo: true,
+verbose      : false,
+log          : 'iajc.log',
+source       : <project_default>,
+target       : <project_default>,
+encoding     : 'utf-8',
+outxml       : true,
 ```
 
-It is possible to specify a different value for the `maxmem` variable of the `compileAspect` or
-`compileTestAspect` task to increase or decrease the max heap size:
+These options can either be configured in the `aspectj` rule or individually
+for the `compileAspect` and `compileTestAspect` tasks and these will take precedence
+over the default ones, for that task
 
 ```groovy
-compileAspect {
-    maxmem = '1024m'
+model {
+    tasks {
+        compileAspect {
+            additionalAjcArgs {
+                xlint = 'warning'
+                maxmem = '1024m'
+            }
+        }
+    }
 }
+
 ```
 
-To specify additional [ajc arguments](http://www.eclipse.org/aspectj/doc/released/devguide/antTasks-iajc.html#antTasks-iajc-options), you can use ```additionalAjcArgs```. If ```xlint``` or ```maxmem``` are also specified in ```additionalAjcArgs```, the values in ```additionalAjcArgs``` will take precedence. For example, to preserve debug symbols,
-
-```groovy
-compileAspect {
-     additionalAjcArgs = ['debug' : '', 'X' : 'noInline', 'preserveAllLocals' : '']
-}
-```
-
-See https://github.com/eveoh/aspectj-example for an example project, contributed by Jason Zwolak.
-
-Development
------------
-
-We do not use this code any longer and this repository has been archived. Feel free to fork to make your own changes.
-
-License
--------
-
-The project is licensed under the Apache 2.0 license. Most/all of the code
-originated from the Spring Security project and was created by Luke Taylor and
-Rob Winch. See `LICENSE` for details.
+See [ajc arguments](http://www.eclipse.org/aspectj/doc/released/devguide/antTasks-iajc.html#antTasks-iajc-options)
