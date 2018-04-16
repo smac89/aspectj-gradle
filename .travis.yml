@@ -8,6 +8,7 @@ cache:
   - $HOME/.gradle
 
 matrix:
+  fast_finish: true
   include:
     - os: linux
       jdk: openjdk8
