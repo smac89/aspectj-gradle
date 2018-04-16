@@ -1,7 +1,11 @@
 Gradle AspectJ plugin
 =====================
 
+##### Linux/OSX
 [![Build Status](https://travis-ci.org/smac89/aspectj-gradle.svg?branch=master)](https://travis-ci.org/smac89/aspectj-gradle)
+##### Windows
+[![Build status](https://ci.appveyor.com/api/projects/status/gftqjxn7vowgqmna?svg=true)](https://ci.appveyor.com/project/smac89/aspectj-gradle)
+
 
 Usage
 -----
