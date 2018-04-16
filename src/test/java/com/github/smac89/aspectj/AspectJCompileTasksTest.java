@@ -45,10 +45,10 @@ public class AspectJCompileTasksTest {
     @Test
     public void willCreateCompileTask() {
         BuildResult result = GradleRunner.create()
-                                         .withProjectDir(testProjectDir.getRoot())
-                                         .withPluginClasspath()
-                                         .withArguments(taskName)
-                                         .build();
+                .withProjectDir(testProjectDir.getRoot())
+                .withArguments(taskName, "--stacktrace")
+                .withPluginClasspath()
+                .build();
 
         assertThat(result.task(":" + taskName).getOutcome(), equalTo(SUCCESS));
     }
