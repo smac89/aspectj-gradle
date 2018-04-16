@@ -1,49 +1,17 @@
 Gradle AspectJ plugin
 =====================
 
+[![Build Status](https://travis-ci.org/smac89/aspectj-gradle.svg?branch=master)](https://travis-ci.org/smac89/aspectj-gradle)
+
 Usage
 -----
 
 See https://plugins.gradle.org/plugin/com.github.smac89.aspectj
 
-_build.gradle_
-
-### New Style
-
-```groovy
-plugins {
-  id "com.github.smac89.aspectj" version "0.1.0"
-}
-```
-
-### Old Style
-```groovy
-buildscript {
-  repositories {
-    maven {
-      url "https://plugins.gradle.org/m2/"
-    }
-  }
-  dependencies {
-    classpath "gradle.plugin.com.github.smac89.aspectj:aspectj-gradle:0.1.0"
-  }
-}
-
-apply plugin: "com.github.smac89.aspectj"
-```
-
-
-_gradle.properties_
-
-```groovy
-aspectjVersion = '1.8.13'
-```
-
-**NOTE:** This plugin is rule based and as such follows the model-like structure.
-See the example project for an example configuration.
-
 ### Requirements
-Compatible with Gradle 4+
+- Gradle 4+
+
+### Configurations
 
 Use the `aspectpath` `testAspectpath` configurations to specify external aspects or external code to weave
 
@@ -53,7 +21,17 @@ dependencies {
 }
 ```
 
-### Options
+_gradle.properties_
+
+```groovy
+aspectjVersion = '1.8.13'
+```
+
+**NOTE:** This plugin is rule based and as such follows the rule based model structure.
+See the example project for an example configuration.
+
+
+### [Aspectj Options](https://www.eclipse.org/aspectj/doc/released/devguide/antTasks-iajc.html)
 By default, the following options are set in the `aspectj` rule:
 
 ```groovy
@@ -87,5 +65,3 @@ model {
 }
 
 ```
-
-See [ajc arguments](http://www.eclipse.org/aspectj/doc/released/devguide/antTasks-iajc.html#antTasks-iajc-options)
