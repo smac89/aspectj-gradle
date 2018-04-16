@@ -55,7 +55,7 @@ class AspectJLoadTasksTest {
 
         BuildResult result = GradleRunner.create()
                 .withProjectDir(testProjectDir.getRoot())
-                .withArguments("runAspectApplication")
+                .withArguments("runAspectApplication", "--stacktrace")
                 .withPluginClasspath()
                 .build()
 

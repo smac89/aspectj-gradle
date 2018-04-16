@@ -50,3 +50,13 @@ pluginBundle {
         }
     }
 }
+
+test {
+    testLogging {
+        showStandardStreams = true
+        exceptionFormat = 'full'
+    }
+    onOutput { descriptor, event ->
+        logger.lifecycle("Test: $descriptor produced standard out/err: ${event.message}")
+    }
+}
