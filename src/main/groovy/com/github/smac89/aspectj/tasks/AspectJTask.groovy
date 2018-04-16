@@ -35,6 +35,7 @@ class AspectJTask extends DefaultTask implements AspectTaskWithDefaults {
         additionalAjcArgs
     }
 
+    @Input
     def getAjcArgs() {
         return defaultAjcArgs + [destDir: destDir] + additionalAjcArgs
     }
