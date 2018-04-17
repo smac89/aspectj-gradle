@@ -38,7 +38,7 @@ public class AspectJCompileTasksTest {
     @Before
     public void setup() throws IOException {
         File buildFile = testProjectDir.newFile("build.gradle");
-        writeFile("plugins { id 'com.github.smac89.aspectj' }",
+        writeFile("plugins { id 'com.github.smac89.aspectj' } \n model { aspectj { testWeave 'compile' }}\n",
                   buildFile, StandardCharsets.UTF_8.name());
     }
 

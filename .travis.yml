@@ -3,6 +3,10 @@ language: java
 git:
   depth: 3
 
+branches:
+  only:
+  - master
+
 cache:
   directories:
   - $HOME/.gradle
