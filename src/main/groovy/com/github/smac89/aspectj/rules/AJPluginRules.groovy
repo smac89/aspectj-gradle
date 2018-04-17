@@ -17,6 +17,8 @@ import java.nio.charset.StandardCharsets
 import java.nio.file.Files
 import java.nio.file.Paths
 
+import static com.github.smac89.aspectj.AspectJPlugin.*
+
 class AJPluginRules extends RuleSource {
 
     @Model
@@ -58,12 +60,12 @@ class AJPluginRules extends RuleSource {
             createCompileTask(tasks, sourceSet, "compileAspect", "jar") {
                 it.destDir = "${project.buildDir}/aspect/"
                 it.additionalAjcArgs {
-                    aspectpath = project.configurations.findByName("aspectpath").asPath
+                    aspectpath = project.configurations.findByName(ASPECTS).asPath
                 }
             }
         } else {
             createLoadTask(tasks, "runAspectApplication", sourceSet) {
-                it.jvmArgs += "-javaagent:${project.configurations.weave.asPath}"
+                it.jvmArgs += "-javaagent:${project.configurations."${AJWEAVE}".asPath}"
             }
         }
     }
@@ -78,7 +80,7 @@ class AJPluginRules extends RuleSource {
             createCompileTask(tasks, sourceSet, "compileTestAspect", jarTaskName) {
                 it.destDir = "${project.buildDir}/test-aspect/"
                 it.additionalAjcArgs {
-                    aspectpath = project.configurations.findByName("testAspectpath").asPath
+                    aspectpath = project.configurations.findByName(TEST_ASPECTS).asPath
                 }
             }
 
@@ -89,7 +91,7 @@ class AJPluginRules extends RuleSource {
             }
         } else {
             tasks.withType(Test).get('test').configure {
-                jvmArgs += "-javaagent:${project.configurations.weave.asPath}"
+                jvmArgs += "-javaagent:${project.configurations."${AJWEAVE}".asPath}"
             }
         }
     }
@@ -182,15 +184,5 @@ class AJPluginRules extends RuleSource {
 
             throw new GradleException(exceptionMessage.toString(), error)
         }
-    }
-
-    // https://stackoverflow.com/a/49827689/2089675
-    private static String extractOptionsAsArgs(AJRuleExtension aj) {
-        """${sw ->
-            if (aj.verbose) sw << ' -verbose'
-            if (aj.showWeaveInfo) sw << ' -showWeaveInfo'
-            if (aj.xlint in ['error', 'warning', 'ignore']) sw << " -Xlint:${aj.xlint}"
-            else ""
-        }"""
     }
 }

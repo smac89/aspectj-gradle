@@ -1,10 +1,11 @@
 package com.github.smac89.aspectj.tasks
 
-import com.github.smac89.aspectj.AspectJPlugin
 import com.github.smac89.aspectj.internal.AspectTaskWithDefaults
 import org.gradle.api.Action
 import org.gradle.api.DefaultTask
 import org.gradle.api.tasks.*
+
+import static com.github.smac89.aspectj.AspectJPlugin.AJTOOLS
 /**
  * @author Chigozirim Chukwu
  */
@@ -21,12 +22,11 @@ class AspectJTask extends DefaultTask implements AspectTaskWithDefaults {
     AspectJTask() {
         additionalAjcArgs = [:]
         ant.taskdef(resource: 'org/aspectj/tools/ant/taskdefs/aspectjTaskdefs.properties',
-                classpath: project.configurations.findByName(AspectJPlugin.AJTOOLS)?.asPath)
+                classpath: project.configurations.findByName(AJTOOLS)?.asPath)
     }
 
     @TaskAction
     def compile() {
-        println "Executing with the following args:\n$ajcArgs"
         ant.iajc(ajcArgs)
     }
 
