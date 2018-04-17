@@ -18,6 +18,7 @@ abstract class AJRuleExtension implements AJRuleExtensionBase {
                 aspectpath   : aspectPath?.asPath,
                 encoding     : encoding.name().toLowerCase(),
                 outxml       : outxml,
+                debug        : debug,
         ]
     }
 }

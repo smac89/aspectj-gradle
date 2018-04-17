@@ -31,6 +31,9 @@ public interface AJRuleExtensionBase {
     void setVerbose(boolean verbose);
     boolean getVerbose();
 
+    void setDebug(boolean debug);
+    boolean getDebug();
+
     void setLog(String log);
     String getLog();
 

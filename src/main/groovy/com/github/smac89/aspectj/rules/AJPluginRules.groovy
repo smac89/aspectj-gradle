@@ -30,7 +30,7 @@ class AJPluginRules extends RuleSource {
     @Defaults
     void setDefaultOptions(AJRuleExtension aspectJ, @Path("_project") Project project) {
         aspectJ.appWeave = WeaveOption.COMPILE
-        aspectJ.testWeave = WeaveOption.COMPILE
+        aspectJ.testWeave = WeaveOption.LOAD
 
         aspectJ.fork = true
         aspectJ.maxmem = '1024m'
@@ -39,6 +39,7 @@ class AJPluginRules extends RuleSource {
         aspectJ.showWeaveInfo = true
         aspectJ.verbose = false
         aspectJ.log = 'iajc.log'
+        aspectJ.debug = false
 
         aspectJ.source = JavaVersion.toVersion(project.properties.sourceCompatibility)
         aspectJ.target = JavaVersion.toVersion(project.properties.targetCompatibility)
@@ -132,7 +133,7 @@ class AJPluginRules extends RuleSource {
                         if (aj.verbose) sw << ' -verbose'
                         if (aj.showWeaveInfo) sw << ' -showWeaveInfo'
                         if (aj.xlint in ['error', 'warning', 'ignore']) sw << " -Xlint:${aj.xlint}"
-                        else ""
+                        if (aj.debug) sw << " -debug"
                     }"""
                     xmlWriter.doubleQuotes = true
                     xmlWriter.aspectj {
